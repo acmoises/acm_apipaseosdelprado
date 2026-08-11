@@ -9,6 +9,7 @@ use App\Http\Controllers\Api\PaymentApiController;
 use App\Http\Controllers\Api\ResidentApiController;
 use App\Http\Controllers\Api\RosterApiController;
 use App\Http\Controllers\Api\SpentApiController;
+use App\Http\Controllers\Api\UserApiController;
 use Illuminate\Support\Facades\Route;
 
 /*
@@ -28,6 +29,9 @@ Route::middleware('auth:sanctum')->group(function () {
     Route::get('/me', [AuthController::class, 'me']);
     Route::post('/logout', [AuthController::class, 'logout']);
 
+    // User Management & Permissions
+    Route::apiResource('users', UserApiController::class);
+
     // Dashboard metrics
     Route::get('/dashboard/metrics', [DashboardApiController::class, 'metrics']);
 
@@ -46,6 +50,7 @@ Route::middleware('auth:sanctum')->group(function () {
     Route::get('/payments/services', [PaymentApiController::class, 'services']);
     Route::get('/payments/by-resident', [PaymentApiController::class, 'getPaymentsByResident']);
     Route::get('/payments/cancelled', [PaymentApiController::class, 'cancelledList']);
+    Route::get('/payments/{id}/pdf', [PaymentApiController::class, 'generatePdf']);
     Route::post('/payments/cancel', [PaymentApiController::class, 'cancel']);
     Route::apiResource('payments', PaymentApiController::class);
 

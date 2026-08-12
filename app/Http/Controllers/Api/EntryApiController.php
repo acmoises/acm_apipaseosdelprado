@@ -54,7 +54,6 @@ class EntryApiController extends Controller
         // 2.- Pase directo
         $pasesDirectos = ["0000271712", "0000220175", "0011276995"];
         if (in_array($resident->card_id, $pasesDirectos)) {
-            $this->sendPulseToArduino();
             
             $entry = Entries::create([
                 'resident_id' => $resident->id,
@@ -107,9 +106,6 @@ class EntryApiController extends Controller
             ], 403);
         }
 
-        // Mandar pulso si se permite el acceso
-        $this->sendPulseToArduino();
-
         return response()->json([
             'success' => true,
             'message' => $message,
@@ -140,18 +136,5 @@ class EntryApiController extends Controller
             ->whereMonth('created_at', $fechaMesAnterior->month)
             ->whereYear('created_at', $fechaMesAnterior->year)
             ->exists();
-    }
-
-    private function sendPulseToArduino()
-    {
-        $scriptPath = base_path('scripts/sendToArduino.ps1');
-
-        $command = "powershell -ExecutionPolicy Bypass -File \"$scriptPath\" >> " . base_path('scripts/log.txt');
-
-        try {
-            shell_exec($command);
-        } catch (\Exception $e) {
-            Log::error("Error enviando pulso al Arduino: " . $e->getMessage());
-        }
     }
 }

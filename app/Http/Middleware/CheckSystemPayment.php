@@ -19,9 +19,12 @@ class CheckSystemPayment
     {
         $user = $request->user();
 
-        // Si es el super admin (el proveedor del software), siempre dejamos pasar la petición
-        // para que pueda entrar a registrar el pago
-        if ($user && $user->email === 'moises.lsc.19@gmail.com') {
+        // Si es el super admin (el proveedor del software) o tiene acceso total, siempre dejamos pasar la petición
+        // para que puedan entrar a registrar el pago
+        $isSuperAdmin = $user && strtolower(trim($user->email)) === 'moises.lsc.19@gmail.com';
+        $hasFullAccess = $user && is_array($user->permissions) && in_array('*', $user->permissions);
+
+        if ($user && ($isSuperAdmin || $hasFullAccess)) {
             return $next($request);
         }
 
@@ -29,16 +32,21 @@ class CheckSystemPayment
         
         // Si estamos a día 4 o posterior, verificamos el pago
         if ($now->day >= 4) {
-            $paymentExists = SystemPayment::where('month', $now->month)
-                                          ->where('year', $now->year)
-                                          ->exists();
+            try {
+                $paymentExists = SystemPayment::where('month', $now->month)
+                                              ->where('year', $now->year)
+                                              ->exists();
+            } catch (\Exception $e) {
+                // Si la tabla no existe o hay error de DB, asumimos que no hay pago
+                $paymentExists = false;
+            }
 
             if (!$paymentExists) {
                 return response()->json([
                     'success' => false,
                     'message' => 'Servicio Suspendido. Por favor, póngase en contacto con el proveedor del software.',
                     'error_code' => 'PAYMENT_REQUIRED'
-                ], 402); // 402 Payment Required
+                ], 403); // 403 Forbidden to prevent WAF CORS stripping
             }
         }
 

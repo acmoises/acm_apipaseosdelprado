@@ -23,7 +23,7 @@ Route::post('/login', [AuthController::class, 'login']);
 Route::post('/register', [AuthController::class, 'register']);
 
 // Protected API Routes
-Route::middleware('auth:sanctum')->group(function () {
+Route::middleware(['auth:sanctum', 'check.payment'])->group(function () {
 
     // User session
     Route::get('/me', [AuthController::class, 'me']);
@@ -65,5 +65,9 @@ Route::middleware('auth:sanctum')->group(function () {
 
     // Boletos
     Route::post('/boletos/generate', [\App\Http\Controllers\Api\BoletoApiController::class, 'generate']);
+
+    // Pagos del Sistema (Software Renta)
+    Route::get('/system-payments', [\App\Http\Controllers\Api\SystemPaymentController::class, 'index']);
+    Route::post('/system-payments', [\App\Http\Controllers\Api\SystemPaymentController::class, 'store']);
 
 });

@@ -59,6 +59,8 @@ class EntryApiController extends Controller
                 'resident_id' => $resident->id,
             ]);
 
+            event(new \App\Events\AccessGranted('entry'));
+
             return response()->json([
                 'success' => true,
                 'message' => 'Permitir acceso',
@@ -105,6 +107,8 @@ class EntryApiController extends Controller
                 'entry' => $entry
             ], 403);
         }
+
+        event(new \App\Events\AccessGranted('entry'));
 
         return response()->json([
             'success' => true,

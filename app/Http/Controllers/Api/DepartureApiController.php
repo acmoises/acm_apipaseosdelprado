@@ -59,6 +59,8 @@ class DepartureApiController extends Controller
                 'resident_id' => $resident->id,
             ]);
 
+            event(new \App\Events\AccessGranted('departure'));
+
             return response()->json([
                 'success' => true,
                 'message' => 'Permitir acceso',
@@ -105,6 +107,8 @@ class DepartureApiController extends Controller
                 'departure' => $departure
             ], 403);
         }
+
+        event(new \App\Events\AccessGranted('departure'));
 
         return response()->json([
             'success' => true,

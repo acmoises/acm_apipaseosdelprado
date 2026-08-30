@@ -15,4 +15,9 @@ class Spent extends Model
         'amount',
         'evidence',
     ];
+
+    public function user()
+    {
+        return $this->belongsTo(User::class);
+    }
 }

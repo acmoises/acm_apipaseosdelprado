@@ -58,6 +58,7 @@ Route::middleware(['auth:sanctum', 'check.payment'])->group(function () {
     Route::apiResource('spents', SpentApiController::class);
 
     // Rosters (Nómina)
+    Route::get('/rosters/{id}/pdf', [RosterApiController::class, 'generatePdf']);
     Route::apiResource('rosters', RosterApiController::class);
 
     // Bitácoras
@@ -65,6 +66,7 @@ Route::middleware(['auth:sanctum', 'check.payment'])->group(function () {
 
     // Boletos
     Route::post('/boletos/generate', [\App\Http\Controllers\Api\BoletoApiController::class, 'generate']);
+    Route::post('/boletos/pdf', [\App\Http\Controllers\Api\BoletoApiController::class, 'generatePdf']);
 
     // Pagos del Sistema (Software Renta)
     Route::get('/system-payments', [\App\Http\Controllers\Api\SystemPaymentController::class, 'index']);

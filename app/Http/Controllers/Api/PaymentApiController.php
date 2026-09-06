@@ -248,6 +248,33 @@ class PaymentApiController extends Controller
         ]);
     }
 
+    public function checkResidentMonth(Request $request)
+    {
+        $validator = Validator::make($request->all(), [
+            'resident_id' => 'required|exists:residents,id',
+        ]);
+
+        if ($validator->fails()) {
+            return response()->json([
+                'success' => false,
+                'errors' => $validator->errors()
+            ], 422);
+        }
+
+        $currentMonth = \Carbon\Carbon::now()->month;
+        $currentYear = \Carbon\Carbon::now()->year;
+
+        $hasPayment = Payment::where('resident_id', $request->resident_id)
+            ->whereMonth('created_at', $currentMonth)
+            ->whereYear('created_at', $currentYear)
+            ->exists();
+
+        return response()->json([
+            'success' => true,
+            'has_payment' => $hasPayment
+        ]);
+    }
+
     public function generatePdf($id)
     {
         $payment = Payment::with(['resident', 'service', 'user'])->find($id);

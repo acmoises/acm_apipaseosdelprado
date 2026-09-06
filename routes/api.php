@@ -49,6 +49,7 @@ Route::middleware(['auth:sanctum', 'check.payment'])->group(function () {
     // Payments
     Route::get('/payments/services', [PaymentApiController::class, 'services']);
     Route::get('/payments/by-resident', [PaymentApiController::class, 'getPaymentsByResident']);
+    Route::get('/payments/check-resident-month', [PaymentApiController::class, 'checkResidentMonth']);
     Route::get('/payments/cancelled', [PaymentApiController::class, 'cancelledList']);
     Route::get('/payments/{id}/pdf', [PaymentApiController::class, 'generatePdf']);
     Route::post('/payments/cancel', [PaymentApiController::class, 'cancel']);

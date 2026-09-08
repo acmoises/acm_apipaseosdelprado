@@ -85,4 +85,25 @@ class RosterApiController extends Controller
 
         return $pdf->stream("recibo-nomina-{$roster->roster_identifier}.pdf");
     }
+
+    public function cancel($id)
+    {
+        $roster = Roster::find($id);
+
+        if (!$roster) {
+            return response()->json([
+                'success' => false,
+                'message' => 'El pago de nómina especificado no existe'
+            ], 404);
+        }
+
+        $roster->status = 'cancelled';
+        $roster->save();
+
+        return response()->json([
+            'success' => true,
+            'message' => 'Pago de nómina cancelado exitosamente',
+            'data' => $roster
+        ]);
+    }
 }

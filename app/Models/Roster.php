@@ -14,5 +14,6 @@ class Roster extends Model
         'name',
         'roster_identifier',
         'amount',
+        'status',
     ];
 }

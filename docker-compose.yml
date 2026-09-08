@@ -1,0 +1,40 @@
+version: '3.8'
+
+services:
+  db:
+    image: mysql:8.0
+    container_name: mysql_paseosdelprado
+    ports:
+      - "3306:3306"
+    environment:
+      MYSQL_DATABASE: paseosdelprado
+      MYSQL_ROOT_PASSWORD: root
+    volumes:
+      - db_data:/var/lib/mysql
+      # Opcional: Montar el archivo SQL para que se importe automáticamente al crear el contenedor por primera vez
+      - ./respaldobd10082026.sql:/docker-entrypoint-initdb.d/init.sql
+
+  app:
+    build:
+      context: .
+      dockerfile: Dockerfile
+    container_name: app_paseosdelprado
+    ports:
+      - "8000:8000"
+    volumes:
+      - .:/var/www/html
+    depends_on:
+      - db
+      - mailpit
+    environment:
+      DB_HOST: db
+
+  mailpit:
+    image: 'axllent/mailpit:latest'
+    container_name: mailpit_paseosdelprado
+    ports:
+      - "1025:1025"
+      - "8025:8025"
+
+volumes:
+  db_data:

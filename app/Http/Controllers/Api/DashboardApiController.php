@@ -34,10 +34,12 @@ class DashboardApiController extends Controller
 
         $totalSpents = Spent::whereYear('created_at', $year)
             ->whereMonth('created_at', $month)
+            ->where('status', 'active')
             ->sum('amount');
 
         $totalRosters = Roster::whereYear('created_at', $year)
             ->whereMonth('created_at', $month)
+            ->where('status', 'active')
             ->sum('amount');
 
         $entriesMonth = Entries::whereYear('created_at', $year)
@@ -75,12 +77,21 @@ class DashboardApiController extends Controller
         $totalExpenses = (float)$totalSpents + (float)$totalRosters;
         $netBalance = (float)$totalPayments - $totalExpenses;
 
+        $paidResidentsCount = Payment::whereYear('created_at', $year)
+            ->whereMonth('created_at', $month)
+            ->distinct()
+            ->count('resident_id');
+
+        $unpaidResidentsCount = $totalResidents - $paidResidentsCount;
+
         return response()->json([
             'success' => true,
             'month' => $month,
             'year' => $year,
             'metrics' => [
                 'total_residents' => $totalResidents,
+                'paid_residents' => $paidResidentsCount,
+                'unpaid_residents' => $unpaidResidentsCount,
                 'total_payments' => (float)$totalPayments,
                 'total_spents' => (float)$totalSpents,
                 'total_rosters' => (float)$totalRosters,

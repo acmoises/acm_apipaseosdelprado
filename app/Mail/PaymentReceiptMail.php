@@ -31,8 +31,9 @@ class PaymentReceiptMail extends Mailable
      */
     public function envelope(): Envelope
     {
+        $mes = ucfirst(now()->translatedFormat('F'));
         return new Envelope(
-            subject: 'Administracion Paseos del Prado',
+            subject: 'Pago de Administración Paseos del Prado - ' . $mes,
         );
     }
 

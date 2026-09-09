@@ -56,9 +56,11 @@ Route::middleware(['auth:sanctum', 'check.payment'])->group(function () {
     Route::apiResource('payments', PaymentApiController::class);
 
     // Spents (Gastos)
+    Route::post('/spents/{id}/cancel', [SpentApiController::class, 'cancel']);
     Route::apiResource('spents', SpentApiController::class);
 
     // Rosters (Nómina)
+    Route::post('/rosters/{id}/cancel', [RosterApiController::class, 'cancel']);
     Route::get('/rosters/{id}/pdf', [RosterApiController::class, 'generatePdf']);
     Route::apiResource('rosters', RosterApiController::class);
 

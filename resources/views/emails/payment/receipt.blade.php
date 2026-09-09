@@ -1,13 +1,23 @@
 @component('mail::message')
-# Comprobante de Pago
+# Comprobante de Pago Exitoso
 
-Estimado/a {{ $data['resident'] }},
+Estimado/a **{{ $data['resident'] }}**,
 
-Gracias por su pago de **${{ $data['amount'] }}** correspondiente al servicio **{{ $data['service'] }}**.
+Nos es grato informarle que su pago ha sido procesado exitosamente. Agradecemos su contribución puntual para el mantenimiento y mejora de nuestras instalaciones.
 
-Se adjunta su comprobante de pago en formato PDF.
- 
-{{ config('app.name') }}
+@component('mail::panel')
+## Detalles del Pago
+- **Servicio/Concepto:** {{ $data['service'] }}
+- **Monto Pagado:** ${{ $data['amount'] }} MXN
+- **Fecha:** {{ now()->format('d/m/Y') }}
+@endcomponent
 
-"Juntos hacemos un mejor lugar para vivir" 
+Adjunto a este correo encontrará su recibo oficial en formato PDF para su respaldo y control personal.
+
+Si tiene alguna duda o aclaración sobre este movimiento, por favor no dude en contactarnos.
+
+Atentamente,<br>
+**Administración Paseos del Prado**
+
+*"Juntos hacemos un mejor lugar para vivir"*
 @endcomponent

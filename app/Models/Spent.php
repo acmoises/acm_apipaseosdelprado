@@ -14,6 +14,7 @@ class Spent extends Model
         'concept',
         'amount',
         'evidence',
+        'status',
     ];
 
     public function user()

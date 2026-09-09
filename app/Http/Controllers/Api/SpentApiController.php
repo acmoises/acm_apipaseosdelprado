@@ -63,4 +63,25 @@ class SpentApiController extends Controller
             'data' => $spent
         ], 201);
     }
+
+    public function cancel($id)
+    {
+        $spent = Spent::find($id);
+        
+        if (!$spent) {
+            return response()->json([
+                'success' => false,
+                'message' => 'El gasto no fue encontrado'
+            ], 404);
+        }
+
+        $spent->status = 'cancelled';
+        $spent->save();
+
+        return response()->json([
+            'success' => true,
+            'message' => 'Gasto cancelado correctamente',
+            'data' => $spent
+        ]);
+    }
 }

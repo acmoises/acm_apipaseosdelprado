@@ -30,8 +30,8 @@ class CheckSystemPayment
 
         $now = Carbon::now();
         
-        // Si estamos a día 4 o posterior, verificamos el pago
-        if ($now->day >= 4) {
+        // Si estamos a día 1 o posterior, verificamos el pago
+        if ($now->day >= 1) {
             try {
                 $paymentExists = SystemPayment::where('month', $now->month)
                                               ->where('year', $now->year)

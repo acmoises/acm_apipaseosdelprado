@@ -74,5 +74,6 @@ Route::middleware(['auth:sanctum', 'check.payment'])->group(function () {
     // Pagos del Sistema (Software Renta)
     Route::get('/system-payments', [\App\Http\Controllers\Api\SystemPaymentController::class, 'index']);
     Route::post('/system-payments', [\App\Http\Controllers\Api\SystemPaymentController::class, 'store']);
+    Route::get('/system-license/status', [\App\Http\Controllers\Api\SystemLicenseController::class, 'status']);
 
 });

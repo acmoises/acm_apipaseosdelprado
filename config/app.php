@@ -186,4 +186,7 @@ return [
         // 'Example' => App\Facades\Example::class,
     ])->toArray(),
 
+    'superadmin_email' => env('SUPERADMIN_EMAIL', 'moises.lsc.19@gmail.com'),
+    'system_start_date' => env('SYSTEM_START_DATE', '2026-08-01'),
+
 ];

@@ -42,7 +42,7 @@ class SystemLicenseController extends Controller
         $message = null;
         if ($showWarning) {
             $currentMonthName = $monthNames[$now->month];
-            $nextMonth = $now->copy()->addMonth();
+            $nextMonth = $now->copy()->startOfMonth()->addMonth();
             $nextMonthName = $monthNames[$nextMonth->month];
             $endDay = $now->copy()->endOfMonth()->day;
 

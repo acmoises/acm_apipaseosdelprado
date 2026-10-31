@@ -35,7 +35,8 @@ class CheckSystemPayment
         // 2. Lógica a Mes Vencido (Post-pago):
         // El cliente tiene todo el mes en curso para usar el servicio y pagar.
         // El mes que OBLIGATORIAMENTE debe estar cubierto es el mes anterior.
-        $auditPeriod = $now->copy()->subMonth();
+        // Se usa startOfMonth() para evitar el desbordamiento (month overflow) en días 31
+        $auditPeriod = $now->copy()->startOfMonth()->subMonth();
         $auditMonth = $auditPeriod->month;
         $auditYear = $auditPeriod->year;
 

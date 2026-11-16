@@ -1,6 +1,7 @@
 <?php
 
 use App\Http\Controllers\Api\AuthController;
+use App\Http\Controllers\Api\BillingConfigApiController;
 use App\Http\Controllers\Api\BitacoraApiController;
 use App\Http\Controllers\Api\DashboardApiController;
 use App\Http\Controllers\Api\DepartureApiController;
@@ -54,6 +55,12 @@ Route::middleware(['auth:sanctum', 'check.payment'])->group(function () {
     Route::get('/payments/{id}/pdf', [PaymentApiController::class, 'generatePdf']);
     Route::post('/payments/cancel', [PaymentApiController::class, 'cancel']);
     Route::apiResource('payments', PaymentApiController::class);
+
+    // Billing Config (Configuración de Días de Cobro por Mes/Año)
+    Route::get('/billing-configs/current', [BillingConfigApiController::class, 'current']);
+    Route::get('/billing-configs', [BillingConfigApiController::class, 'index']);
+    Route::post('/billing-configs', [BillingConfigApiController::class, 'store']);
+    Route::post('/billing-configs/reset', [BillingConfigApiController::class, 'reset']);
 
     // Spents (Gastos)
     Route::post('/spents/{id}/cancel', [SpentApiController::class, 'cancel']);

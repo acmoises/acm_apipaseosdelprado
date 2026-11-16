@@ -3,6 +3,7 @@
 namespace App\Http\Controllers\Api;
 
 use App\Http\Controllers\Controller;
+use App\Models\BillingConfig;
 use App\Models\Entries;
 use App\Models\Resident;
 use Illuminate\Http\Request;
@@ -69,8 +70,10 @@ class EntryApiController extends Controller
             ], 201);
         }
 
-        // 3.- Validaciones de pagos de acuerdo a las fechas
-        $day = Carbon::now()->day;
+        // 3.- Validaciones de pagos de acuerdo a las fechas y días de cobro configurados
+        $now = Carbon::now();
+        $day = $now->day;
+        $graceDays = BillingConfig::getDaysForPeriod($now->month, $now->year);
 
         $pagosActuales = $this->tienePagosActuales($resident->id);
         $pagosMesAnterior = $this->tienePagoMesAnterior($resident->id);
@@ -81,7 +84,7 @@ class EntryApiController extends Controller
         if ($pagosActuales) {
             $allowAccess = true;
             $message = 'Permitir acceso';
-        } elseif ($day < 6) {
+        } elseif ($day <= $graceDays) {
             if ($pagosMesAnterior) {
                 $allowAccess = true;
                 $message = 'Permitir acceso. Pago requerido (mes actual)';

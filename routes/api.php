@@ -23,6 +23,9 @@ use Illuminate\Support\Facades\Route;
 Route::post('/login', [AuthController::class, 'login']);
 Route::post('/register', [AuthController::class, 'register']);
 
+// Enlace público firmado para descargar Nota de Remisión de Licencia (SoftMinds) enviada por WhatsApp
+Route::get('/system-payments/{id}/receipt', [\App\Http\Controllers\Api\SystemPaymentController::class, 'publicReceipt']);
+
 // Protected API Routes
 Route::middleware(['auth:sanctum', 'check.payment'])->group(function () {
 
@@ -81,6 +84,7 @@ Route::middleware(['auth:sanctum', 'check.payment'])->group(function () {
     // Pagos del Sistema (Software Renta)
     Route::get('/system-payments', [\App\Http\Controllers\Api\SystemPaymentController::class, 'index']);
     Route::post('/system-payments', [\App\Http\Controllers\Api\SystemPaymentController::class, 'store']);
+    Route::get('/system-payments/{id}/pdf', [\App\Http\Controllers\Api\SystemPaymentController::class, 'generatePdf']);
     Route::get('/system-license/status', [\App\Http\Controllers\Api\SystemLicenseController::class, 'status']);
 
 });

@@ -188,5 +188,7 @@ return [
 
     'superadmin_email' => env('SUPERADMIN_EMAIL', 'moises.lsc.19@gmail.com'),
     'system_start_date' => env('SYSTEM_START_DATE', '2026-08-01'),
+    'client_billing_name' => env('CLIENT_BILLING_NAME', 'OSVALDO CASTAÑEDA DIAZ'),
+    'client_billing_phone' => env('CLIENT_BILLING_PHONE', '5577499651'),
 
 ];
